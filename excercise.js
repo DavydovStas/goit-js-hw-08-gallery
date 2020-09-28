@@ -1,18 +1,27 @@
-import arrayGalleryItems from './gallery-items.js';
+import galleryItems from './gallery-items.js';
+
+const makeMarkupOfGalleryElements = renderGalery();
 
 const refs = {
   galleryList: document.querySelector('.js-gallery'),
   galleryImage: document.querySelector('.gallery__image'),
   modalWindow: document.querySelector('.lightbox'),
-  imageInModalWindow: document.querySelector('.lightbox__image'),
+  modalImage: document.querySelector('.lightbox__image'),
   buttonCloseModals: document.querySelector(
     'button[data-action="close-lightbox"]',
   ),
 };
 
-const makeMarkupOfGalleryElements = arrayGalleryItems
-  .map(({ preview, original, description }) => {
-    return `<li class="gallery__item">
+refs.galleryList.insertAdjacentHTML('afterbegin', makeMarkupOfGalleryElements);
+
+refs.galleryList.addEventListener('click', onGalleryImageClick);
+
+refs.buttonCloseModals.addEventListener('click', onButtonCloseClick);
+
+function renderGalery() {
+  return galleryItems
+    .map(({ preview, original, description }) => {
+      return `<li class="gallery__item">
   <a
     class="gallery__link"
     href="${original}"
@@ -25,26 +34,20 @@ const makeMarkupOfGalleryElements = arrayGalleryItems
     />
   </a>
 </li>`;
-  })
-  .join('');
-
-refs.galleryList.insertAdjacentHTML('afterbegin', makeMarkupOfGalleryElements);
-
-refs.galleryList.addEventListener('click', onGalleryImageClick);
+    })
+    .join('');
+}
 
 function onGalleryImageClick(evt) {
+  evt.preventDefault();
   if (evt.target.nodeName !== 'IMG') {
     return;
   }
-  refs.imageInModalWindow.src = '#';
-  evt.preventDefault();
-  const urlOfGalleryItem = evt.target.dataset.source;
   refs.modalWindow.classList.add('is-open');
-  refs.imageInModalWindow.src = urlOfGalleryItem;
+  refs.modalImage.src = evt.target.dataset.source;
 }
 
-refs.buttonCloseModals.addEventListener('click', onButtonClick);
-
-function onButtonClick() {
+function onButtonCloseClick() {
+  refs.modalImage.src = '#';
   refs.modalWindow.classList.remove('is-open');
 }
