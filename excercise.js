@@ -3,7 +3,6 @@ import galleryItems from './gallery-items.js';
 const refs = {
   galleryList: document.querySelector('.js-gallery'),
   galleryListItems: document.querySelectorAll('.gallery__item'),
-  // galleryActiveListItem: document.querySelector('.active'),
   galleryImage: document.querySelector('.gallery__image'),
   modalWindow: document.querySelector('.lightbox'),
   modalImage: document.querySelector('.lightbox__image'),
